@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from "dotenv";
 import qs from "qs";
+import cookieParser from 'cookie-parser';
 
 import { tourRouter } from './routes/tours.routes.js';
 import { userRouter } from './routes/users.routes.js';
@@ -10,8 +11,9 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 const router = express.Router();
-const port = process.env.port || 3000;
+const port = process.env.PORT || 3000;
 
 app.set("query parser", str => qs.parse(str));
 
