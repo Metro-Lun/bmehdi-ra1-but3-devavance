@@ -1,6 +1,6 @@
 import express from 'express'
 import { getAllUsers, modifyUserById, addUser, deleteUserById, getUserById } from '../controllers/users.controller.js'
-import { signup, login, verifyToken } from '../controllers/auth.controller.js'
+import { signup, login } from '../controllers/auth.controller.js'
 
 const userRouter = express.Router()
 
@@ -22,9 +22,5 @@ userRouter
 userRouter
     .route('/login')
     .post(login)
-
-userRouter
-    .route('/test')
-    .post(verifyToken)
     
 export { userRouter }

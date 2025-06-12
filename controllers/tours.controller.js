@@ -1,7 +1,9 @@
 import TourService from "../services/tours.service.js";
+import AuthService from "../services/auth.service.js";
 import { Tour } from "../models/tour.model.js"; 
 
-const ts = new TourService();
+const tourService = new TourService();
+const authService = new AuthService();
 
 export const getAllTours = async (req, res) => {
     try {
@@ -23,14 +25,18 @@ export const getAllTours = async (req, res) => {
 
 export const createTour = async (req, res) => {
     try {
-        const newTour = await Tour.create(req.body)
+        const connectedUserData = authService.verifyToken(req, res);
+        if(connectedUserData === null || authService.checkRole(data, "admin") || as.checkRole(data, "moderator")) 
+            res.status(400).send("Accès refusé : vous n'êtes ni admin ni modo !");
+
+        const newTour = await Tour.create(req.body);
 
         res.status(201).json({
             status: 'success',
             data: {
                 tour: newTour
             }
-        })
+        });
     }
     catch (err) {
         res.status(400).json({
@@ -85,7 +91,11 @@ export const getTourByComparative = async (req, res) => {
 }
 
 export const modifyTourById = (req, res) => {
-    const valid = ts.changeTourPut(req.params.id, req.body);
+    const connectedUserData = authService.verifyToken(req, res);
+    if(connectedUserData === null || as.checkRole(data, "moderator") || as.checkRole(data, "admin")) 
+        res.status(400).send("Accès refusé car vous n'êtes ni admin ni modo");
+
+    const valid = tourService.changeTourPut(req.params.id, req.body);
 
     if(valid) {
         res.status(204).json({
@@ -99,7 +109,11 @@ export const modifyTourById = (req, res) => {
 }
 
 export const deleteTourById = (req, res) => {
-    const valid = ts.deleteTourFromFile(req.params.id);
+    const connectedUserData = authService.verifyToken(req, res);
+    if(connectedUserData === null || authService.checkRole(data, "admin") || as.checkRole(data, "moderator")) 
+        res.status(400).send("Accès refusé : vous n'êtes ni admin ni modo !");
+
+    const valid = tourService.deleteTourFromFile(req.params.id);
 
     if(valid) {
         res.status(204).json({

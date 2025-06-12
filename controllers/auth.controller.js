@@ -1,6 +1,5 @@
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import * as crypto from 'crypto';
 import { User } from '../models/user.model.js';
 
 const saltRounds = 12;
@@ -57,7 +56,7 @@ export const login = async (req, res) => {
                         maxAge: 60 * 60 * 24,
                     });
 
-                    res.status(500).send("Token generated successfully")              
+                    res.status(200).send("Token generated successfully")              
                 } 
                 else res.status(400).send("token error in login");
             });
@@ -68,26 +67,6 @@ export const login = async (req, res) => {
         res.status(500).json({
             status: "error",
             message: err
-        });
-    }
-}
-
-export const verifyToken = async (req, res) => {
-    try {
-        const { token } = req.cookies;
-        if (token == null) return res.status(401).send(req.headers['authorization']);
-
-        jwt.verify(token, process.env.SECRET_KEY, (err, data) => {
-            if (err) return res.status(401).json(err);
-
-            console.log(data)
-            res.send(data);
-        });
-    }
-    catch(err) {
-        res.status(500).json({
-            status: "error",
-            message: err.message
         });
     }
 }

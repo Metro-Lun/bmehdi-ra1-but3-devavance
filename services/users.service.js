@@ -11,12 +11,13 @@ export default class UserService {
     }
 
     middleware(body) {
-        const fields = ["_id", "name", "email", "role", "active", "photo", "password"];
+        const fields = ["name", "email", "password"];
 
         for (let f of fields) {
             if(!body.hasOwnProperty(f)) return false;
         }
-        return false;
+
+        return true;
     }
 
     changeUserPut(id, body) {
@@ -55,5 +56,9 @@ export default class UserService {
         }
 
         return false;
+    }
+
+    checkRole(role) {
+        // renvoyer une page de non-accès
     }
 }

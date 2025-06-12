@@ -29,8 +29,8 @@ tourRouter
     .put(modifyTourById)
     .delete(deleteTourById)
 
-tourRouter
-    .route("/compare")
-    .get(getTourByComparative);
+// tourRouter
+//     .route("/compare")
+//     .get(getTourByComparative);
 
 export { tourRouter }
